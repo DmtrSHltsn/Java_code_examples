@@ -29,3 +29,9 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### Build ###
+*.exe
+*.jar
+*.bin
+*.bat
