@@ -1,3 +1,4 @@
+import java.security.Key;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -90,13 +91,20 @@ public class Socks {
         socks.forEach(color -> {
             counts.put(color, counts.getOrDefault(color, 0) + 1);
         });
-        System.out.println("Носков по цветам: " + counts);
+        System.out.println("Носков по цветам: ");
+        counts.entrySet().stream()
+                .sorted(Comparator // сортировка сначала по кол-ву, затем при равенстве по цвету
+                        .comparingInt((Map.Entry<String, Integer> e) -> e.getValue()).reversed()
+                        .thenComparing(Map.Entry::getKey))
+                .forEach(entry -> System.out.println(entry.getKey() + "=" + entry.getValue() + " шт"));
+
 
         // Создаём список носков без пары из сформированного маппера counts
         List<String> withoutPair = counts.entrySet().stream() // entrySet - коллекция, stream - поток данных (к нему применяем методы)
                 .filter(entry -> entry.getValue() % 2 == 1) // оставляем только нечётные количества, где остаток от деления на 2 = 1
                 .map(Map.Entry::getKey) // из Entry делаем String, оставляя лишь Key (цвет)
                 .toList(); // собираем в List всё что осталось
+
 
         // Сортируем по возрастанию, собираем в коллекцию и записываем в переменную для красивого вывода
         String result = withoutPair.stream()
